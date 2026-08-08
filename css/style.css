@@ -1090,27 +1090,33 @@ input:focus, textarea:focus { outline: none; border-color: var(--gold); }
    given this class, so the hide itself is never seen. */
 .reveal {
   opacity: 0;
-  transform: translate3d(0, 20px, 0);
+  transform: translate3d(0, 44px, 0);
   will-change: opacity, transform;
 }
 
+/* The curve matters more than the numbers here. This one moves off quickly
+   and then decelerates over a long tail, so the element is clearly seen to
+   travel but arrives softly rather than snapping into place. The opacity is
+   deliberately quicker than the movement, so the text is readable while it
+   is still settling. */
 .reveal.is-visible {
   opacity: 1;
   transform: translate3d(0, 0, 0);
   transition:
-    opacity 0.7s cubic-bezier(0.22, 0.61, 0.36, 1),
-    transform 0.7s cubic-bezier(0.22, 0.61, 0.36, 1);
+    opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 1.05s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* Once settled, drop the compositor hint so long pages stay light. */
 .reveal.is-done { will-change: auto; }
 
-/* Siblings in a group arrive in sequence rather than all at once. */
-.reveal.is-visible[data-reveal-i="1"] { transition-delay: 0.08s; }
-.reveal.is-visible[data-reveal-i="2"] { transition-delay: 0.16s; }
-.reveal.is-visible[data-reveal-i="3"] { transition-delay: 0.24s; }
-.reveal.is-visible[data-reveal-i="4"] { transition-delay: 0.32s; }
-.reveal.is-visible[data-reveal-i="5"] { transition-delay: 0.40s; }
+/* Siblings in a group arrive in sequence rather than all at once. Widened to
+   match the longer travel, so a row of cards reads as a clear cascade. */
+.reveal.is-visible[data-reveal-i="1"] { transition-delay: 0.12s; }
+.reveal.is-visible[data-reveal-i="2"] { transition-delay: 0.24s; }
+.reveal.is-visible[data-reveal-i="3"] { transition-delay: 0.36s; }
+.reveal.is-visible[data-reveal-i="4"] { transition-delay: 0.48s; }
+.reveal.is-visible[data-reveal-i="5"] { transition-delay: 0.60s; }
 
 @media (prefers-reduced-motion: reduce) {
   .reveal,

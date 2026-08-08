@@ -100,9 +100,12 @@ document.addEventListener("DOMContentLoaded", function () {
         window.setTimeout(function () { el.classList.add("is-done"); }, 1200);
       });
     }, {
-      // Start slightly before the element reaches the fold so it settles in view.
-      rootMargin: "0px 0px -8% 0px",
-      threshold: 0.08
+      // The element sits 44px lower than its resting place while hidden, so it
+      // crosses the fold later than its final position would suggest. A small
+      // threshold fires as soon as a sliver appears, which keeps tall cards
+      // from animating only once they are halfway up the screen.
+      rootMargin: "0px 0px -4% 0px",
+      threshold: 0.02
     });
 
     nodes.forEach(function (el) { observer.observe(el); });
