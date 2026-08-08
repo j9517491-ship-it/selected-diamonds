@@ -1,0 +1,30 @@
+# Netlify configuration — Selected Diamonds
+#
+# The site is plain HTML with no build step, so nothing is compiled.
+# Everything in the repository root is published as-is.
+
+[build]
+  publish = "."
+  command = ""
+
+# Send the Netlify subdomain to the real domain.
+#
+# Netlify keeps *.netlify.app reachable even once a primary custom domain is
+# set, which leaves the whole site served from two addresses. Search engines
+# treat that as duplicate content and it splits any ranking signals between
+# them. This forces a permanent redirect to selected-diamonds.fr, preserving
+# the path so deep links and anything already indexed still resolve.
+#
+# force = true is required: without it the rule would lose to the real file
+# that already exists at that path.
+[[redirects]]
+  from = "https://selected-diamonds.netlify.app/*"
+  to = "https://selected-diamonds.fr/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "http://selected-diamonds.netlify.app/*"
+  to = "https://selected-diamonds.fr/:splat"
+  status = 301
+  force = true
