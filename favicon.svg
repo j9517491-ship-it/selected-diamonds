@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="Selected Diamonds">
+  <rect width="32" height="32" rx="6" fill="#faf7f1"/>
+  <path d="M7 13 L11 6 L21 6 L25 13 L16 27 Z" fill="#a8834d"/>
+  <path d="M7.6 13 H24.4" stroke="#faf7f1" stroke-width="1.6" fill="none"/>
+</svg>
