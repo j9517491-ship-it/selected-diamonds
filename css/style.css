@@ -812,9 +812,6 @@ input:focus, textarea:focus { outline: none; border-color: var(--gold); }
   line-height: 1.4;
 }
 
-/* G–J is marked only by its gold band label. The caption calls it highlighted,
-   so the emphasis stays — it is just carried by the type rather than a box. */
-.colour-step.is-pick .colour-band { color: var(--gold); }
 
 .clarity-scale {
   display: grid;
