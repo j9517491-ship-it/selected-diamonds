@@ -256,6 +256,12 @@ section { padding: 72px 0; }
   padding: 32px;
 }
 
+/* A wider crop for photo cards that sit in a narrow side column, where a 4:3
+   image would make the column much taller than the text beside it. */
+.card-photo-wide .card-photo-img {
+  aspect-ratio: 16 / 9;
+}
+
 /* ---------- portfolio ---------- */
 .gem-tile {
   border: 1px solid var(--line);
