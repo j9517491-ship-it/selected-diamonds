@@ -1145,3 +1145,42 @@ input:focus, textarea:focus { outline: none; border-color: var(--gold); }
     transition-delay: 0s;
   }
 }
+
+/* ---------- home benefit cards: hover ----------
+   Mirrors the portfolio cards so the two sections behave alike: the card
+   lifts, its border warms to gold, and the photograph drifts slowly closer.
+   The zoom is clipped by the card's own overflow:hidden.
+
+   The :hover selector carries higher specificity than .reveal.is-visible,
+   so the lift is not overridden by the scroll-reveal transform. The base
+   transition sits after the reveal block for the same reason. */
+
+.card.card-photo {
+  transition:
+    transform 0.55s cubic-bezier(0.22, 0.61, 0.36, 1),
+    border-color 0.55s ease,
+    box-shadow 0.55s ease;
+}
+
+.card-photo-img {
+  transition: transform 0.9s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+@media (hover: hover) {
+  .card.card-photo:hover {
+    transform: translateY(-6px);
+    border-color: var(--gold-light);
+    box-shadow: 0 20px 44px -26px rgba(22, 20, 15, 0.5);
+  }
+
+  .card.card-photo:hover .card-photo-img {
+    transform: scale(1.07);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card.card-photo,
+  .card-photo-img { transition: none; }
+  .card.card-photo:hover { transform: none; }
+  .card.card-photo:hover .card-photo-img { transform: none; }
+}
