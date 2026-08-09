@@ -345,7 +345,9 @@ document.addEventListener("DOMContentLoaded", function () {
              'viewBox="0 0 ' + PLATE.w + ' ' + PLATE.h + '" xmlns="http://www.w3.org/2000/svg" role="img" ' +
              'aria-label="A ' + LABELS[shape].toLowerCase() + ' diamond, ' + lmm.toFixed(2) + ' by ' +
              wmm.toFixed(2) + ' millimetres">' +
-             '<image href="../images/stone-' + shape + '.webp" x="' + sx.toFixed(3) + '" y="' + sy.toFixed(3) +
+             // Root-absolute so the tool works wherever it is used — the article
+             // sits one level down, the dedicated page at the root.
+             '<image href="/images/stone-' + shape + '.webp" x="' + sx.toFixed(3) + '" y="' + sy.toFixed(3) +
              '" width="' + wmm.toFixed(3) + '" height="' + lmm.toFixed(3) +
              '" preserveAspectRatio="xMidYMid meet"/>' +
              '</svg>';

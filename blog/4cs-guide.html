@@ -269,59 +269,10 @@
 
         <p>Two diamonds of the same carat weight can nonetheless look noticeably different when viewed from above.</p>
 
-        <div class="carat-tool" data-carat-tool>
-          <div class="carat-inner">
-
-            <div class="carat-shapes" role="group" aria-label="Diamond shape">
-              <button type="button" class="carat-shape" data-shape="round" aria-pressed="true">Round</button>
-              <button type="button" class="carat-shape" data-shape="oval" aria-pressed="false">Oval</button>
-              <button type="button" class="carat-shape" data-shape="pear" aria-pressed="false">Pear</button>
-              <button type="button" class="carat-shape" data-shape="marquise" aria-pressed="false">Marquise</button>
-              <button type="button" class="carat-shape" data-shape="cushion" aria-pressed="false">Cushion</button>
-              <button type="button" class="carat-shape" data-shape="emerald" aria-pressed="false">Emerald</button>
-            </div>
-
-            <div class="carat-stage" data-carat-stage></div>
-
-            <div class="carat-slider">
-              <label for="caratRange">Carat weight</label>
-              <div class="carat-range-wrap">
-                <span class="carat-end">0.25</span>
-                <input type="range" id="caratRange" min="0.25" max="3" step="0.01" value="1"
-                       aria-label="Carat weight" aria-valuetext="1.00 carat">
-                <span class="carat-end">3.00</span>
-              </div>
-            </div>
-
-            <dl class="carat-readout">
-              <div><dt>Carat</dt><dd data-carat-ct>1.00<span>ct</span></dd></div>
-              <div><dt>Length</dt><dd data-carat-len>6.30<span>mm</span></dd></div>
-              <div><dt>Width</dt><dd data-carat-wid>6.30<span>mm</span></dd></div>
-            </dl>
-
-            <div class="carat-foot">
-              <p class="carat-mode" data-carat-mode>Approximate size</p>
-              <p class="carat-note" data-carat-note>Sizes are to scale against one another. Calibrate your screen to see the stone at approximately actual size.</p>
-              <p>
-                <button type="button" class="carat-link" data-carat-calibrate-open>Adjust actual size</button>
-                <span class="carat-sep">&middot;</span>
-                <button type="button" class="carat-link" data-carat-enlarge aria-pressed="false">Show enlarged</button>
-              </p>
-
-              <div class="carat-calibrate" data-carat-calibrate hidden>
-                <p class="carat-note">Hold a bank card flat against the screen and drag the slider until the outline matches it exactly. Every card is 85.60&nbsp;mm wide, which is how the page learns the size of a millimetre on your device.</p>
-                <div class="carat-card" data-carat-card style="width:320px;max-width:100%;"></div>
-                <label for="caratCardRange">Card width</label>
-                <input type="range" id="caratCardRange" min="180" max="640" step="1" value="320" aria-label="Reference card width">
-                <p style="margin-top:14px;">
-                  <button type="button" class="carat-link" data-carat-save>Save calibration</button>
-                  <span class="carat-sep">&middot;</span>
-                  <button type="button" class="carat-link" data-carat-reset>Reset</button>
-                </p>
-              </div>
-            </div>
-
-          </div>
+        <div class="card" style="text-align:center;padding:30px 28px;">
+          <h3 style="margin-bottom:8px;">See it at actual size</h3>
+          <p style="margin-bottom:20px;">Compare six shapes at true scale, and calibrate the tool to your own screen so a stone appears at its real millimetre size.</p>
+          <p style="margin:0;"><a class="btn btn-outline" href="../carat-size.html">Open the carat size tool</a></p>
         </div>
 
         <p>A diamond may carry more of its weight in its depth, making it face up smaller. Another diamond of the same weight may have a wider visible spread. Shape also affects perceived size: elongated ovals, pears and marquises can appear larger than round diamonds of an equivalent weight.</p>
@@ -436,6 +387,6 @@
   </div>
 </footer>
 
-<script src="../js/script.js?v=a8dabda5"></script>
+<script src="../js/script.js?v=b2c70cc1"></script>
 </body>
 </html>
