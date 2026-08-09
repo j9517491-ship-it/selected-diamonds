@@ -443,34 +443,78 @@ document.addEventListener("DOMContentLoaded", function () {
     render();
   }
 
-  // Contact form -> Formspree (or mailto fallback) with lightweight validation + status message
+  // Contact form. Submits in the background so the visitor stays on the page
+  // and gets a clear answer either way. An enquiry that silently disappears is
+  // worse than no form at all, so every failure path says so plainly and shows
+  // the email address as a way through.
   var form = document.querySelector(".contact-form");
   if (form) {
+    var ADDRESS = "contact@selected-diamonds.fr";
+
+    var setStatus = function (status, text, kind) {
+      if (!status) return;
+      status.textContent = text;
+      status.setAttribute("data-state", kind || "");
+    };
+
+    var mailtoFallback = function (status) {
+      var val = function (sel) {
+        var el = form.querySelector(sel);
+        return el ? el.value : "";
+      };
+      var body = encodeURIComponent(
+        "Name: " + val("#firstName") + " " + val("#lastName") + "\n" +
+        "Email: " + val("#email") + "\n" +
+        "Phone: " + val("#phone") + "\n\n" +
+        val("#message")
+      );
+      window.location.href =
+        "mailto:" + ADDRESS + "?subject=Diamond%20sourcing%20inquiry&body=" + body;
+      setStatus(status,
+        "Opening your email app. If nothing happens, please write to " + ADDRESS + " directly.",
+        "warn");
+    };
+
     form.addEventListener("submit", function (e) {
       var status = form.querySelector(".form-status");
+      var button = form.querySelector("button[type=submit]");
       var action = form.getAttribute("action") || "";
 
-      // If the Formspree endpoint hasn't been configured yet, fall back to mailto
-      // so the form still works out of the box.
-      if (action.indexOf("YOUR_FORM_ID") !== -1) {
-        e.preventDefault();
-        var first = form.querySelector("#firstName");
-        var last = form.querySelector("#lastName");
-        var email = form.querySelector("#email");
-        var phone = form.querySelector("#phone");
-        var message = form.querySelector("#message");
+      e.preventDefault();
 
-        var body = encodeURIComponent(
-          "Name: " + (first ? first.value : "") + " " + (last ? last.value : "") + "\n" +
-          "Email: " + (email ? email.value : "") + "\n" +
-          "Phone: " + (phone ? phone.value : "") + "\n\n" +
-          (message ? message.value : "")
-        );
-        window.location.href = "mailto:contact@selected-diamonds.fr?subject=Diamond%20sourcing%20inquiry&body=" + body;
-        if (status) {
-          status.textContent = "Opening your email app to send this request…";
-        }
+      // No endpoint configured yet — hand off to the visitor's mail app.
+      if (!action || action.indexOf("YOUR_FORM_ID") !== -1) {
+        mailtoFallback(status);
+        return;
       }
+
+      if (typeof form.reportValidity === "function" && !form.reportValidity()) return;
+
+      if (button) { button.disabled = true; }
+      setStatus(status, "Sending…", "");
+
+      fetch(action, {
+        method: "POST",
+        body: new FormData(form),
+        headers: { Accept: "application/json" }
+      }).then(function (res) {
+        if (res.ok) {
+          form.reset();
+          setStatus(status,
+            "Thank you — your message has been sent. I'll reply personally, usually within one working day.",
+            "ok");
+        } else {
+          // The endpoint answered but rejected it: quota reached, unverified, misconfigured.
+          setStatus(status,
+            "Something went wrong sending that. Please write to " + ADDRESS + " and I'll come straight back to you.",
+            "warn");
+        }
+      }).catch(function () {
+        // Offline, blocked, or the service is unreachable.
+        mailtoFallback(status);
+      }).then(function () {
+        if (button) { button.disabled = false; }
+      });
     });
   }
 });

@@ -328,6 +328,8 @@ input:focus, textarea:focus { outline: none; border-color: var(--gold); }
 
 .form-note { font-size: 0.85rem; color: var(--ink-soft); }
 .form-status { font-size: 0.9rem; margin-top: 6px; }
+.form-status[data-state="ok"] { color: #4a6b4a; }
+.form-status[data-state="warn"] { color: #8a5a2b; }
 
 /* ---------- contact info blocks ---------- */
 .contact-info { display: grid; gap: 20px; }
