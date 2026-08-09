@@ -231,11 +231,25 @@ section { padding: 72px 0; }
   border-radius: 3px;
 }
 
-.card-icon {
-  width: 44px;
-  height: 44px;
-  margin-bottom: 18px;
-  color: var(--gold);
+/* Cards led by a photograph. The card's own padding is moved onto an inner
+   body so the image can run edge to edge, while the text keeps exactly the
+   spacing it had before. overflow:hidden makes the photograph follow the
+   card's top corner radius. */
+.card-photo {
+  padding: 0;
+  overflow: hidden;
+}
+
+.card-photo-img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  object-position: center;
+}
+
+.card-photo-body {
+  padding: 32px;
 }
 
 /* ---------- portfolio ---------- */
