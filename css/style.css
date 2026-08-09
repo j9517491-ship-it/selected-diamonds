@@ -240,9 +240,13 @@ section { padding: 72px 0; }
   overflow: hidden;
 }
 
+/* height:auto is required, not optional. The intrinsic height="675" attribute
+   is applied by the browser as a real CSS height, which would otherwise win
+   over aspect-ratio and render a tall, cropped sliver of the photograph. */
 .card-photo-img {
   display: block;
   width: 100%;
+  height: auto;
   aspect-ratio: 4 / 3;
   object-fit: cover;
   object-position: center;
