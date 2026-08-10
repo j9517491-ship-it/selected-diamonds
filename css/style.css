@@ -1208,3 +1208,7 @@ input:focus, textarea:focus { outline: none; border-color: var(--gold); }
   .booking-fallback .btn { display: block; margin: 10px auto 0; }
   .booking-fallback .btn + .btn { margin-left: auto; }
 }
+
+/* Telephone shown as text rather than a tel: link, so it cannot be auto-dialled
+   by a click. Styled to match the surrounding list items. */
+.phone-plain { color: inherit; }

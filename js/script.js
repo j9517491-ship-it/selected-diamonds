@@ -458,20 +458,48 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (configured) {
       booking.classList.add("is-live");
-      var cs = document.createElement("script");
-      cs.src = "https://app.cal.com/embed/embed.js";
-      cs.async = true;
-      cs.onload = function () {
-        if (typeof window.Cal !== "function") { booking.classList.remove("is-live"); return; }
-        window.Cal("init", { origin: "https://cal.com" });
-        window.Cal("inline", {
-          elementOrSelector: "#booking-embed",
-          calLink: calLink,
-          layout: "month_view"
-        });
-      };
-      cs.onerror = function () { booking.classList.remove("is-live"); };
-      document.head.appendChild(cs);
+
+      // Cal.com's own loader. The Cal() function has to exist *before* embed.js
+      // arrives, because the script drains a queue of calls rather than defining
+      // Cal itself — loading the script first leaves window.Cal undefined and
+      // nothing ever renders.
+      (function (C, A, L) {
+        var p = function (a, ar) { a.q.push(ar); };
+        var d = C.document;
+        C.Cal = C.Cal || function () {
+          var cal = C.Cal, ar = arguments;
+          if (!cal.loaded) {
+            cal.ns = {};
+            cal.q = cal.q || [];
+            d.head.appendChild(d.createElement("script")).src = A;
+            cal.loaded = true;
+          }
+          if (ar[0] === L) {
+            var api = function () { p(api, arguments); };
+            var namespace = ar[1];
+            api.q = api.q || [];
+            if (typeof namespace === "string") { cal.ns[namespace] = api; p(api, ar); }
+            else { p(cal, ar); }
+            return;
+          }
+          p(cal, ar);
+        };
+      })(window, "https://app.cal.com/embed/embed.js", "init");
+
+      window.Cal("init", { origin: "https://cal.com" });
+      window.Cal("inline", {
+        elementOrSelector: "#booking-embed",
+        calLink: calLink,
+        layout: "month_view"
+      });
+
+      // If no calendar has actually appeared, put the fallback back so the page
+      // never shows an empty space where a booking form should be.
+      window.setTimeout(function () {
+        if (!booking.querySelector("#booking-embed iframe")) {
+          booking.classList.remove("is-live");
+        }
+      }, 9000);
     }
   }
 
