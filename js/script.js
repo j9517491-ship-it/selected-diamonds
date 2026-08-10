@@ -445,6 +445,28 @@ document.addEventListener("DOMContentLoaded", function () {
     render();
   }
 
+  // Telephone number, revealed on a real click.
+  // The number is stored reversed and base64-encoded, so it does not appear in
+  // the page source for a scraper sweeping HTML for phone patterns, and it is
+  // only decoded in response to a genuine user gesture. This stops bulk
+  // harvesters; it will not stop anyone running a real browser, and it is not
+  // meant to.
+  Array.prototype.forEach.call(document.querySelectorAll(".phone-reveal"), function (host) {
+    var btn = host.querySelector(".phone-reveal-btn");
+    if (!btn) return;
+    btn.addEventListener("click", function () {
+      var enc = host.getAttribute("data-tel") || "";
+      var number;
+      try {
+        number = atob(enc).split("").reverse().join("");
+      } catch (e) {
+        return;
+      }
+      host.textContent = number;
+      host.removeAttribute("data-tel");
+    });
+  });
+
   // Booking embed (Cal.com).
   // The third-party script is fetched only once a real booking link has been
   // set, so before configuration the page loads nothing external and simply

@@ -1212,3 +1212,46 @@ input:focus, textarea:focus { outline: none; border-color: var(--gold); }
 /* Telephone shown as text rather than a tel: link, so it cannot be auto-dialled
    by a click. Styled to match the surrounding list items. */
 .phone-plain { color: inherit; }
+
+/* ---------- navigation call to action ---------- */
+.nav-cta {
+  border: 1px solid var(--gold);
+  border-radius: 2px;
+  padding: 7px 14px !important;
+  color: var(--gold) !important;
+  transition: background 0.25s ease, color 0.25s ease;
+}
+
+.nav-cta:hover,
+.nav-cta.active {
+  background: var(--gold);
+  color: var(--ink) !important;
+  border-color: var(--gold);
+  border-bottom-color: var(--gold) !important;
+}
+
+/* ---------- telephone reveal ----------
+   The number is decoded only on a click, so it is absent from the page source
+   that bulk scrapers read. */
+.phone-reveal-btn {
+  font-family: var(--sans);
+  font-size: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  border-bottom: 1px dotted currentColor;
+  padding: 0;
+  cursor: pointer;
+}
+
+.phone-reveal-btn:hover { color: var(--gold); }
+
+@media (max-width: 760px) {
+  /* six items no longer fit the old dropdown height */
+  .nav-links.open { max-height: 420px; }
+  .nav-cta {
+    display: inline-block !important;
+    margin: 10px 24px;
+    padding: 10px 18px !important;
+  }
+}
