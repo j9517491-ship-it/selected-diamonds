@@ -445,6 +445,36 @@ document.addEventListener("DOMContentLoaded", function () {
     render();
   }
 
+  // Booking embed (Cal.com).
+  // The third-party script is fetched only once a real booking link has been
+  // set, so before configuration the page loads nothing external and simply
+  // shows the email and phone fallback. If the script fails to load — blocked,
+  // offline, service down — the fallback comes back, so a visitor who wants an
+  // appointment always has a way to ask for one.
+  var booking = document.querySelector(".booking");
+  if (booking) {
+    var calLink = (booking.getAttribute("data-cal-link") || "").trim();
+    var configured = calLink && calLink.indexOf("YOUR_CAL_LINK") === -1;
+
+    if (configured) {
+      booking.classList.add("is-live");
+      var cs = document.createElement("script");
+      cs.src = "https://app.cal.com/embed/embed.js";
+      cs.async = true;
+      cs.onload = function () {
+        if (typeof window.Cal !== "function") { booking.classList.remove("is-live"); return; }
+        window.Cal("init", { origin: "https://cal.com" });
+        window.Cal("inline", {
+          elementOrSelector: "#booking-embed",
+          calLink: calLink,
+          layout: "month_view"
+        });
+      };
+      cs.onerror = function () { booking.classList.remove("is-live"); };
+      document.head.appendChild(cs);
+    }
+  }
+
   // Contact form. Submits in the background so the visitor stays on the page
   // and gets a clear answer either way. An enquiry that silently disappears is
   // worse than no form at all, so every failure path says so plainly and shows

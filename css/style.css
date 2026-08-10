@@ -1183,3 +1183,28 @@ input:focus, textarea:focus { outline: none; border-color: var(--gold); }
   .card.card-photo:hover { transform: none; }
   .card.card-photo:hover .card-photo-img { transform: none; }
 }
+
+/* ---------- booking ----------
+   The embed is hidden until the Cal.com script has actually loaded and the
+   booking link is configured. Until then the fallback stands in, so the page
+   never shows an empty box where a calendar should be. */
+.booking-embed {
+  display: none;
+  min-height: 580px;
+}
+
+.booking.is-live .booking-embed { display: block; }
+.booking.is-live .booking-fallback { display: none; }
+
+.booking-fallback {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  padding: 36px 28px;
+  text-align: center;
+}
+
+@media (max-width: 560px) {
+  .booking-fallback .btn { display: block; margin: 10px auto 0; }
+  .booking-fallback .btn + .btn { margin-left: auto; }
+}
