@@ -1257,23 +1257,21 @@ input:focus, textarea:focus { outline: none; border-color: var(--gold); }
 }
 
 /* ---------- hero diamond ----------
-   The source has an opaque near-white background. Rather than key it out —
-   risky, since the stone's own highlights are almost white and would tear —
-   multiply blends it into the ivory page: white pixels vanish, the diamond
-   stays. Costs nothing and leaves no halo. */
+   The background is baked into the frames at exactly --ivory, so no blend
+   mode is needed: mix-blend-mode: multiply darkened the whole image a few
+   values and left a faintly visible rectangle against the page. */
 .hero-diamond {
   display: block;
-  width: 200px;
-  max-width: 55%;
-  margin: 4px auto 18px;
+  width: 280px;
+  max-width: 68%;
+  margin: 2px auto 20px;
 }
 
 .hero-diamond img {
   width: 100%;
   height: auto;
-  mix-blend-mode: multiply;
 }
 
 @media (max-width: 560px) {
-  .hero-diamond { width: 150px; margin-bottom: 14px; }
+  .hero-diamond { width: 200px; margin-bottom: 14px; }
 }
