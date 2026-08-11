@@ -7,6 +7,50 @@ document.addEventListener("DOMContentLoaded", function () {
   var FR = document.documentElement.lang === "fr";
   function t(en, fr) { return FR ? fr : en; }
 
+  // Language switch, and a one-time redirect for French-speaking browsers.
+  //
+  // Rules, in order of authority:
+  //   1. An explicit choice always wins and is remembered. Using the switch is
+  //      that choice, in either direction.
+  //   2. Otherwise a French browser arriving on an English page is sent to the
+  //      French twin — but only where a true twin exists. The untranslated
+  //      articles link to the French home page instead, and bouncing someone
+  //      off the article they asked for would be worse than leaving them on it.
+  //   3. ?lang=en or ?lang=fr overrides everything, so a link can be shared
+  //      in a known language and Emilia can test either edition.
+  (function () {
+    var KEY = "sd-lang";
+    var link = document.querySelector(".lang-switch a");
+    var store = function (v) { try { localStorage.setItem(KEY, v); } catch (e) {} };
+    var read  = function ()  { try { return localStorage.getItem(KEY); } catch (e) { return null; } };
+
+    if (link) {
+      link.addEventListener("click", function () { store(link.getAttribute("data-lang")); });
+    }
+
+    var forced = (location.search.match(/[?&]lang=(en|fr)/) || [])[1];
+    if (forced) { store(forced); }
+
+    var here = document.documentElement.lang === "fr" ? "fr" : "en";
+    var want = forced || read();
+
+    if (want === here || !link) return;
+    if (!want) {
+      if (here !== "en") return;                       // only English pages redirect
+      if (!link.hasAttribute("data-lang-exact")) return; // no equivalent page to send them to
+      var langs = navigator.languages || [navigator.language || ""];
+      var prefersFR = Array.prototype.some.call(langs, function (l) { return /^fr\b/i.test(l); });
+      if (!prefersFR) return;
+      want = "fr";
+      store("fr");
+    }
+    if (want === link.getAttribute("data-lang")) {
+      // replace(), not assign(), so the back button returns to where they came
+      // from rather than to a page that immediately redirects them again.
+      location.replace(link.href);
+    }
+  })();
+
   // Mobile nav toggle
   var toggle = document.querySelector(".nav-toggle");
   var links = document.querySelector(".nav-links");
