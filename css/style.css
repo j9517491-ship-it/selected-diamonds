@@ -128,7 +128,10 @@ img { max-width: 100%; display: block; }
   transition: 0.25s;
 }
 
-@media (max-width: 760px) {
+/* The six nav items need about 907px in English and 995px in French before
+   they collide with the wordmark. The hamburger therefore has to appear below
+   1000px, not 760px — at 768px the desktop row was already overlapping. */
+@media (max-width: 1000px) {
   .nav-toggle { display: block; }
   .nav-links {
     position: absolute;
@@ -1256,7 +1259,7 @@ input:focus, textarea:focus { outline: none; border-color: var(--gold); }
 
 .phone-reveal-btn:hover { color: var(--gold); }
 
-@media (max-width: 760px) {
+@media (max-width: 1000px) {
   /* six items no longer fit the old dropdown height */
   .nav-links.open { max-height: 420px; }
   .nav-cta {

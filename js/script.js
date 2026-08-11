@@ -1,6 +1,12 @@
 // Selected Diamonds — shared behaviour
 
 document.addEventListener("DOMContentLoaded", function () {
+  // Two language editions share this file. Every string the script writes into
+  // the page goes through t(), which reads <html lang>, so a French page never
+  // shows a stray English sentence from the carat tool or the contact form.
+  var FR = document.documentElement.lang === "fr";
+  function t(en, fr) { return FR ? fr : en; }
+
   // Mobile nav toggle
   var toggle = document.querySelector(".nav-toggle");
   var links = document.querySelector(".nav-links");
@@ -283,7 +289,10 @@ document.addEventListener("DOMContentLoaded", function () {
       ]
     };
 
-    var LABELS = {
+    var LABELS = FR ? {
+      round: "Taille brillant", oval: "Ovale", pear: "Poire",
+      marquise: "Marquise", cushion: "Coussin", emerald: "Émeraude"
+    } : {
       round: "Round brilliant", oval: "Oval", pear: "Pear",
       marquise: "Marquise", cushion: "Cushion", emerald: "Emerald"
     };
@@ -343,8 +352,8 @@ document.addEventListener("DOMContentLoaded", function () {
       var sy = PLATE.h / 2 - lmm / 2;
       return '<svg width="' + (PLATE.w * pxmm).toFixed(1) + '" height="' + (PLATE.h * pxmm).toFixed(1) + '" ' +
              'viewBox="0 0 ' + PLATE.w + ' ' + PLATE.h + '" xmlns="http://www.w3.org/2000/svg" role="img" ' +
-             'aria-label="A ' + LABELS[shape].toLowerCase() + ' diamond, ' + lmm.toFixed(2) + ' by ' +
-             wmm.toFixed(2) + ' millimetres">' +
+             'aria-label="' + t("A " + LABELS[shape].toLowerCase() + " diamond, " + lmm.toFixed(2) + " by " + wmm.toFixed(2) + " millimetres",
+                                "Un diamant " + LABELS[shape].toLowerCase() + ", " + lmm.toFixed(2).replace(".", ",") + " sur " + wmm.toFixed(2).replace(".", ",") + " millimètres") + '">' +
              // Root-absolute so the tool works wherever it is used — the article
              // sits one level down, the dedicated page at the root.
              '<image href="/images/stone-' + shape + '.webp" x="' + sx.toFixed(3) + '" y="' + sy.toFixed(3) +
@@ -367,17 +376,20 @@ document.addEventListener("DOMContentLoaded", function () {
       var note = caratTool.querySelector("[data-carat-note]");
       var enl  = caratTool.querySelector("[data-carat-enlarge]");
       if (state.enlarged) {
-        mode.textContent = "Enlarged view";
-        note.textContent = "Shown larger than life so the outline is easy to read. Not to scale.";
+        mode.textContent = t("Enlarged view", "Vue agrandie");
+        note.textContent = t("Shown larger than life so the outline is easy to read. Not to scale.",
+                             "Affichée plus grande que nature pour que le contour se lise facilement. Pas à l’échelle.");
       } else if (state.calibrated) {
-        mode.textContent = "Actual size";
-        note.textContent = "Calibrated to this screen, so the stone is shown at its real millimetre size.";
+        mode.textContent = t("Actual size", "Taille réelle");
+        note.textContent = t("Calibrated to this screen, so the stone is shown at its real millimetre size.",
+                             "Calibré sur cet écran : la pierre est affichée à sa dimension réelle en millimètres.");
       } else {
-        mode.textContent = "Approximate size";
-        note.innerHTML = "Sizes are to scale against one another. Calibrate your screen to see the stone at approximately actual size.";
+        mode.textContent = t("Approximate size", "Taille approximative");
+        note.innerHTML = t("Sizes are to scale against one another. Calibrate your screen to see the stone at approximately actual size.",
+                           "Les tailles sont à l’échelle les unes par rapport aux autres. Calibrez votre écran pour voir la pierre à peu près à sa taille réelle.");
       }
       enl.setAttribute("aria-pressed", String(state.enlarged));
-      enl.textContent = state.enlarged ? "Show smaller" : "Show enlarged";
+      enl.textContent = state.enlarged ? t("Show smaller", "Réduire") : t("Show enlarged", "Agrandir");
     }
 
     function render() {
@@ -387,7 +399,7 @@ document.addEventListener("DOMContentLoaded", function () {
       outCt.innerHTML  = state.ct.toFixed(2) + '<span>ct</span>';
       outLen.innerHTML = lmm.toFixed(2) + '<span>mm</span>';
       outWid.innerHTML = wmm.toFixed(2) + '<span>mm</span>';
-      range.setAttribute("aria-valuetext", state.ct.toFixed(2) + " carat");
+      range.setAttribute("aria-valuetext", state.ct.toFixed(2) + t(" carat", " carat"));
       var pct = ((state.ct - 0.25) / (3 - 0.25)) * 100;
       range.style.setProperty("--pct", pct.toFixed(1) + "%");
 
@@ -545,15 +557,16 @@ document.addEventListener("DOMContentLoaded", function () {
         return el ? el.value : "";
       };
       var body = encodeURIComponent(
-        "Name: " + val("#firstName") + " " + val("#lastName") + "\n" +
-        "Email: " + val("#email") + "\n" +
-        "Phone: " + val("#phone") + "\n\n" +
+        t("Name: ", "Nom : ") + val("#firstName") + " " + val("#lastName") + "\n" +
+        t("Email: ", "E-mail : ") + val("#email") + "\n" +
+        t("Phone: ", "Téléphone : ") + val("#phone") + "\n\n" +
         val("#message")
       );
       window.location.href =
-        "mailto:" + ADDRESS + "?subject=Diamond%20sourcing%20inquiry&body=" + body;
+        "mailto:" + ADDRESS + "?subject=" + t("Diamond%20sourcing%20inquiry", "Demande%20de%20sourcing%20de%20diamant") + "&body=" + body;
       setStatus(status,
-        "Opening your email app. If nothing happens, please write to " + ADDRESS + " directly.",
+        t("Opening your email app. If nothing happens, please write to " + ADDRESS + " directly.",
+          "Ouverture de votre messagerie. Si rien ne se passe, écrivez-moi directement à " + ADDRESS + "."),
         "warn");
     };
 
@@ -573,7 +586,7 @@ document.addEventListener("DOMContentLoaded", function () {
       if (typeof form.reportValidity === "function" && !form.reportValidity()) return;
 
       if (button) { button.disabled = true; }
-      setStatus(status, "Sending…", "");
+      setStatus(status, t("Sending…", "Envoi en cours…"), "");
 
       fetch(action, {
         method: "POST",
@@ -583,12 +596,14 @@ document.addEventListener("DOMContentLoaded", function () {
         if (res.ok) {
           form.reset();
           setStatus(status,
-            "Thank you — your message has been sent. I'll reply personally, usually within one working day.",
+            t("Thank you — your message has been sent. I'll reply personally, usually within one working day.",
+              "Merci — votre message a bien été envoyé. Je vous répondrai personnellement, en général sous un jour ouvré."),
             "ok");
         } else {
           // The endpoint answered but rejected it: quota reached, unverified, misconfigured.
           setStatus(status,
-            "Something went wrong sending that. Please write to " + ADDRESS + " and I'll come straight back to you.",
+            t("Something went wrong sending that. Please write to " + ADDRESS + " and I'll come straight back to you.",
+              "L’envoi a échoué. Écrivez-moi à " + ADDRESS + " et je reviens vers vous sans tarder."),
             "warn");
         }
       }).catch(function () {
