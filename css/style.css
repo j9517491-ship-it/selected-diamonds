@@ -1222,19 +1222,22 @@ input:focus, textarea:focus { outline: none; border-color: var(--gold); }
 .nav-cta {
   display: inline-block;
   line-height: 1;
+  background: var(--gold);
   border: 1px solid var(--gold);
+  border-bottom-color: var(--gold) !important;
   border-radius: 2px;
   padding: 9px 15px !important;
-  color: var(--gold) !important;
-  transition: background 0.25s ease, color 0.25s ease;
+  color: var(--ink) !important;
+  transition: background 0.25s ease, border-color 0.25s ease;
 }
 
+/* Filled by default, so hover has to darken rather than fill. */
 .nav-cta:hover,
 .nav-cta.active {
-  background: var(--gold);
+  background: #9a7845;
+  border-color: #9a7845;
+  border-bottom-color: #9a7845 !important;
   color: var(--ink) !important;
-  border-color: var(--gold);
-  border-bottom-color: var(--gold) !important;
 }
 
 /* ---------- telephone reveal ----------
