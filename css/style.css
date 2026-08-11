@@ -793,8 +793,6 @@ input:focus, textarea:focus { outline: none; border-color: var(--gold); }
   color: var(--ink-soft);
 }
 
-.cut-row.is-best .cut-grade { color: var(--gold); }
-
 @media (max-width: 560px) {
   .cut-row { grid-template-columns: 92px 1fr; gap: 18px; }
   .cut-grade { font-size: 1.05rem; }
