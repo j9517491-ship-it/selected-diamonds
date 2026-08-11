@@ -91,6 +91,7 @@ img { max-width: 100%; display: block; }
 
 .nav-links {
   display: flex;
+  align-items: center;
   gap: 32px;
   list-style: none;
   margin: 0;
@@ -1214,10 +1215,16 @@ input:focus, textarea:focus { outline: none; border-color: var(--gold); }
 .phone-plain { color: inherit; }
 
 /* ---------- navigation call to action ---------- */
+/* The other nav items are inline elements, where vertical padding does not
+   grow the line box. Left inline, the CTA's border box overflowed its line
+   and sat low against its neighbours; inline-block plus an explicit
+   line-height gives it a real box that the flex row can centre. */
 .nav-cta {
+  display: inline-block;
+  line-height: 1;
   border: 1px solid var(--gold);
   border-radius: 2px;
-  padding: 7px 14px !important;
+  padding: 9px 15px !important;
   color: var(--gold) !important;
   transition: background 0.25s ease, color 0.25s ease;
 }
@@ -1260,6 +1267,18 @@ input:focus, textarea:focus { outline: none; border-color: var(--gold); }
    The background is baked into the frames at exactly --ivory, so no blend
    mode is needed: mix-blend-mode: multiply darkened the whole image a few
    values and left a faintly visible rectangle against the page. */
+/* Hero typography: the eyebrow carries more weight now that "Independent"
+   has gone, and the headline steps back so the two read as a pair. */
+.hero .eyebrow {
+  font-size: clamp(0.92rem, 1.5vw, 1.15rem);
+  letter-spacing: 0.26em;
+  margin-bottom: 1em;
+}
+
+.hero h1 {
+  font-size: clamp(1.85rem, 3.1vw, 2.6rem);
+}
+
 .hero-diamond {
   display: block;
   width: 280px;
