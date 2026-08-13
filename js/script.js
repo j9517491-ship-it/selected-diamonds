@@ -35,9 +35,16 @@ document.addEventListener("DOMContentLoaded", function () {
     var want = forced || read();
 
     if (want === here || !link) return;
+
+    // No automatic redirect unless this page has a true counterpart. Without
+    // this, a reader browsing in French who follows a link to an untranslated
+    // article was thrown to the French home page — losing the very article they
+    // clicked. Applies to a remembered preference just as much as to a guess
+    // from the browser: the reader asked for this page, so leave them on it.
+    if (!link.hasAttribute("data-lang-exact")) return;
+
     if (!want) {
       if (here !== "en") return;                       // only English pages redirect
-      if (!link.hasAttribute("data-lang-exact")) return; // no equivalent page to send them to
       var langs = navigator.languages || [navigator.language || ""];
       var prefersFR = Array.prototype.some.call(langs, function (l) { return /^fr\b/i.test(l); });
       if (!prefersFR) return;
