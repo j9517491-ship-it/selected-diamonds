@@ -10,8 +10,8 @@ import re, os
 CSS = re.search(r'style\.css\?v=[0-9a-f]+', open('index.html').read()).group(0)
 JS  = re.search(r'script\.js\?v=[0-9a-f]+',  open('index.html').read()).group(0)
 
-NAV = [("index.html","Accueil"),("about.html","À propos"),("portfolio.html","Portfolio"),
-       ("blog/index.html","Journal"),("contact.html","Contact")]
+NAV = [("index.html","Accueil"),("about.html","À propos"),("services.html","Prestations"),
+       ("portfolio.html","Portfolio"),("blog/index.html","Journal"),("contact.html","Contact")]
 
 def head(title, desc, canon_fr, en_page, extra=""):
     """en_page is the English counterpart's path from the site root."""
