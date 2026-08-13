@@ -92,7 +92,11 @@ img { max-width: 100%; display: block; }
 .nav-links {
   display: flex;
   align-items: center;
-  gap: 32px;
+  /* Seven items now, and the French labels are longer than the English ones.
+     Rather than chase a fixed breakpoint every time an item is added, the row
+     tightens itself as the window narrows and only falls back to the hamburger
+     once even the tight setting will not fit. */
+  gap: clamp(14px, 2.1vw, 32px);
   list-style: none;
   margin: 0;
   padding: 0;
@@ -102,7 +106,7 @@ img { max-width: 100%; display: block; }
 
 .nav-links a {
   text-transform: uppercase;
-  font-size: 0.82rem;
+  font-size: clamp(0.72rem, 1.05vw, 0.82rem);
   letter-spacing: 0.08em;
   padding-bottom: 4px;
   border-bottom: 1px solid transparent;
@@ -128,11 +132,10 @@ img { max-width: 100%; display: block; }
   transition: 0.25s;
 }
 
-/* Measured collision points, wordmark against the nav row: 961px in English,
-   1052px in French once the language switch is counted. The hamburger has to
-   appear below the wider of the two, so 1060px rather than the original 760px
-   — at 768px the desktop row was already overlapping. */
-@media (max-width: 1060px) {
+/* The nav grew to seven items with the Services page. With the fluid sizing
+   above it holds together down to roughly 1100px in French, the wider of the
+   two languages; below that the hamburger takes over. */
+@media (max-width: 1100px) {
   .nav-toggle { display: block; }
   .nav-links {
     position: absolute;
@@ -147,7 +150,7 @@ img { max-width: 100%; display: block; }
     transition: max-height 0.3s ease;
     border-bottom: 1px solid var(--line);
   }
-  .nav-links.open { max-height: 320px; }
+  .nav-links.open { max-height: 380px; }
   .nav-links li { border-top: 1px solid var(--line); }
   .nav-links a { display: block; padding: 16px 24px; }
 }
@@ -169,7 +172,7 @@ img { max-width: 100%; display: block; }
 
 .lang-switch a:hover { color: var(--gold) !important; }
 
-@media (max-width: 1060px) {
+@media (max-width: 1100px) {
   /* In the dropdown there is no room for a vertical rule, and the item needs
      the same full-width tap target as every other row. */
   .lang-switch { border-left: none; padding-left: 0; margin-left: 0; }
@@ -1282,9 +1285,9 @@ input:focus, textarea:focus { outline: none; border-color: var(--gold); }
 
 .phone-reveal-btn:hover { color: var(--gold); }
 
-@media (max-width: 1060px) {
+@media (max-width: 1100px) {
   /* six items no longer fit the old dropdown height */
-  .nav-links.open { max-height: 420px; }
+  .nav-links.open { max-height: 480px; }
   .nav-cta {
     display: inline-block !important;
     margin: 10px 24px;
