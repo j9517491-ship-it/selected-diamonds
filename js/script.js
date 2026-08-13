@@ -87,6 +87,7 @@ document.addEventListener("DOMContentLoaded", function () {
       ".hero h1",
       ".hero p",
       ".hero .btn",
+      ".service-head",
       "main h2",
       ".card",
       ".post-card",

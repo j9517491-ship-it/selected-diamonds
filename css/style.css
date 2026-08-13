@@ -155,6 +155,38 @@ img { max-width: 100%; display: block; }
   .nav-links a { display: block; padding: 16px 24px; }
 }
 
+/* ---------- service sketches ----------
+   A small line drawing sits beside each service heading. Flex rather than a
+   float so the heading stays vertically centred against the drawing however
+   many lines it wraps to. */
+.service-head {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-top: 2.2em;
+}
+
+.service-head h2 {
+  margin: 0;                 /* article.post h2 adds a top margin we don't want here */
+}
+
+.service-sketch {
+  flex: 0 0 92px;
+  line-height: 0;
+}
+
+.service-sketch svg {
+  display: block;
+  width: 92px;
+  height: 92px;
+}
+
+@media (max-width: 560px) {
+  .service-head { gap: 14px; }
+  .service-sketch { flex-basis: 64px; }
+  .service-sketch svg { width: 64px; height: 64px; }
+}
+
 /* ---------- language switch ----------
    Sits after the Book a Call button, separated by a hairline so it reads as a
    utility rather than a sixth destination. */
