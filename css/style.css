@@ -338,6 +338,44 @@ section { padding: 72px 0; }
   aspect-ratio: 16 / 9;
 }
 
+/* ---------- clickable photo cards ----------
+   The whole card is one anchor, as in the portfolio carousel. The trailing
+   line is a paragraph rather than a link: an <a> inside an <a> is invalid and
+   browsers resolve it by breaking the outer one. */
+.card-link {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+
+.card-link:hover { color: inherit; }
+
+.card-link:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+}
+
+.card-more {
+  margin: 0;
+  font-size: 0.88rem;
+  color: var(--gold);
+  transition: color 0.25s ease;
+}
+
+.card-link:hover .card-more { color: var(--ink); }
+
+/* .card-photo already clips its corners, so the image can grow inside it. */
+.card-link .card-photo-img {
+  transition: transform 0.9s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.card-link:hover .card-photo-img { transform: scale(1.04); }
+
+@media (prefers-reduced-motion: reduce) {
+  .card-link .card-photo-img,
+  .card-link:hover .card-photo-img { transition: none; transform: none; }
+}
+
 /* ---------- portfolio ---------- */
 .gem-tile {
   border: 1px solid var(--line);
