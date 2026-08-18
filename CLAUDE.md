@@ -11,52 +11,69 @@ the root, French under `/fr/`. If a change touches copy, layout, a link, an
 image or a page, the counterpart gets the same change before the work is
 called done. Never leave the two versions out of step.
 
-Page map:
-
 | English | French |
 | --- | --- |
 | `index.html` | `fr/index.html` |
-| `about.html`, `portfolio.html`, `contact.html`, `consultation.html`, `carat-size.html` | same names under `fr/` |
-| `portfolio-*.html` (4 case pages) | same names under `fr/` |
+| `about.html`, `services.html`, `portfolio.html`, `contact.html`, `consultation.html`, `carat-size.html` | same names under `fr/` |
+| `portfolio-fivestone-weddingband.html`, `portfolio-fine-jewellery-commission.html`, `portfolio-private-purchase.html`, `portfolio-heirloom-reset.html`, `portfolio-mixed-shape-earrings.html` | same names under `fr/` |
 | `privacy-policy.html`, `terms-conditions.html`, `shipping-policy.html` | same names under `fr/` |
-| `blog/4cs-guide.html` | `fr/blog/4cs-guide.html` |
-| `blog/coloured-diamonds.html`, `blog/optical-properties.html` (stubs) | same names under `fr/blog/` |
+| `blog/4cs-guide.html`, `blog/optical-properties.html` | same names under `fr/blog/` |
+| `blog/coloured-diamonds.html` (placeholder) | same name under `fr/blog/` |
 | `blog/index.html`, `blog/natural-vs-lab-grown.html`, `blog/engagement-ring-guide.html`, `blog/natural-diamond-formation.html` | **not yet translated** |
 
-French pages that link to an untranslated English article mark it
-`(en anglais)` in a muted span. Remove that label when the translation lands.
+Navigation, both languages, seven items plus the language switch:
+Home · About · Services · Portfolio · Journal · Contact · Book a Call · FR
+Accueil · À propos · Prestations · Portfolio · Journal · Contact · Réserver un appel · EN
 
-## After any CSS or JS change
+## Routine after certain changes
 
-Run `python3 tools/stamp-assets.py`, then copy the new `?v=` hashes into the
-French pages — the script only walks the English tree. Skipping this is why
-Safari kept showing stale styles.
-
-## After adding or removing a page
-
-Run `python3 tools/link-languages.py`. It rebuilds the EN/FR switch in every
-nav and the reciprocal `hreflang` tags. It also strips `noindex`, so re-add it
-to the two unwritten article stubs afterwards.
+- **After any CSS or JS edit** — run `python3 tools/stamp-assets.py`, then copy
+  the new `?v=` hashes into the French pages. The script only walks the English
+  tree. Skipping this is why Safari kept serving stale styles.
+- **After adding or removing a page** — run `python3 tools/link-languages.py`.
+  It rebuilds the EN/FR switch in every nav and the reciprocal `hreflang` tags.
+  It also strips `noindex`, so re-add it to any placeholder afterwards.
+- **After publishing an article** — add it to `blog/index.html` by hand. That
+  listing is maintained manually and is easy to forget; an article went live
+  unlisted once already.
+- **After adding a page** — add it to `sitemap.xml`. Placeholders stay out.
 
 ## Things that are deliberate, not oversights
 
-- **Nav breakpoint is 1060px.** Measured: the wordmark collides with the nav
-  row at 961px in English and 1052px in French once the language switch is
-  counted. Do not lower it without re-measuring both languages.
+- **Nav breakpoint is 1100px,** with `clamp()` on the gap and font size so the
+  row tightens before it collapses. Measured collision points: 961px English,
+  1052px French, before Services was added. Re-measure both languages if the
+  nav grows again.
 - **`.card-photo-img` needs `height: auto`.** The intrinsic `height` attribute
   is applied as a real CSS height and beats `aspect-ratio` without it.
-- **The carat tool's strings live in `js/script.js`,** routed through `t(en, fr)`
-  which reads `<html lang>`. New user-facing strings in the script need both.
-- **Language redirect only fires where an exact twin exists.** The untranslated
-  articles link to the French home page and never auto-redirect — bouncing a
-  reader off the article they asked for is worse than showing them English.
-- **The two article stubs carry `noindex` and are absent from `sitemap.xml`.**
-  When the content is written, delete the robots meta and add the URLs.
+- **Photo cards are one anchor** (`.card-link`), and the trailing line is a
+  `<p class="card-more">`, not a link. An `<a>` inside an `<a>` is invalid and
+  browsers break the outer one.
+- **Carat tool and form strings live in `js/script.js`,** routed through
+  `t(en, fr)` which reads `<html lang>`. New user-facing strings need both.
+- **The language redirect never fires unless the page has a true twin**
+  (`data-lang-exact`). Without that guard a French reader following a link to
+  an untranslated article was thrown to the French home page.
+- **Placeholders carry `noindex` and stay out of `sitemap.xml`.** Delete the
+  robots meta and add the URL when the content is written.
+- **`portfolio-engagement-solitaire.html` is a redirect stub** left at the old
+  address after the rename to `portfolio-fivestone-weddingband.html`.
+- **Article figures are inline SVG drawn from scratch,** never copied from GIA
+  material. Labels and `aria-label` are translated on the French pages.
+
+## Verification worth re-running
+
+A pass over all pages that checks: balanced tags, every local link resolves,
+every `<img>` has `alt`, SVG parses, nav and footer identical within each
+language, carousel items counted *inside* `.pf-track`, published articles all
+present in the Journal listing, placeholders absent from it.
 
 ## Open items
 
-- `blog/coloured-diamonds.html` and `blog/optical-properties.html` are
-  placeholders in both languages, awaiting Emilia's content.
-- The contact form still posts to `formspree.io/f/YOUR_FORM_ID`; until she
-  signs up it falls back to the visitor's mail app.
-- Three English articles await French translation (see the table above).
+- `blog/coloured-diamonds.html` — Chemistry placeholder, both languages.
+- No French Journal index; `fr/blog/` holds two articles and the nav points at
+  the English listing.
+- Contact form still posts to `formspree.io/f/YOUR_FORM_ID`; until she signs
+  up it falls back to the visitor's mail app.
+- Three English articles await French translation.
+- The five-stone band case page does not name the metal or finish.

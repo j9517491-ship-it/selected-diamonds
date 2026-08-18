@@ -10,11 +10,17 @@ import os, re, glob
 
 # path -> (french twin, exact?)   exact means "same page, other language",
 # which is the only case where an automatic redirect is honest.
+def is_redirect_stub(path):
+    """Moved-page stubs have no nav and no head worth wiring — skip them."""
+    return 'http-equiv="refresh"' in open(path).read()
+
 PAIRS = {}
 for f in glob.glob('*.html'):
-    if os.path.exists(os.path.join('fr', f)):
+    if os.path.exists(os.path.join('fr', f)) and not is_redirect_stub(f):
         PAIRS[f] = ('fr/' + f, True)
 for f in glob.glob('blog/*.html'):
+    if is_redirect_stub(f):
+        continue
     twin = os.path.join('fr', f)
     PAIRS[f] = (twin, True) if os.path.exists(twin) else ('fr/index.html', False)
 
