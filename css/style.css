@@ -965,6 +965,27 @@ input:focus, textarea:focus { outline: none; border-color: var(--gold); }
   text-align: center;
 }
 
+/* Two photographs of the same subject, read side by side. Below 560px they
+   stack: two half-width photographs of small stones show nothing. */
+.photo-pair-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.photo-pair-label {
+  margin: 8px 0 0;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gold);
+  text-align: center;
+}
+
+@media (max-width: 560px) {
+  .photo-pair-grid { grid-template-columns: 1fr; gap: 24px; }
+}
+
 .pf-note {
   margin: 0 0 32px;
   padding: 14px 0 14px 18px;
